@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #1fbbfe, #1decf0); 
+    }
+    .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-image: linear-gradient(rgb(29, 214, 247),rgb(27, 49, 245));
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border: 14px solid black;
+        position: relative;  
+    }
+    h2 {
+        text-align: center;
+        border-radius: 15px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-size: x-large;
+        color: #fe7506;
+        margin-bottom: 20px; 
+        border: 10px solid black;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="tel"],
+    input[type="checkbox"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    input[type="radio"] {
+        margin-right: 5px;
+    }
+    .radio-label {
+        display: inline-block;
+        margin-right: 15px;
+    }
+    .error {
+        color: #FF0001;
+    }
+    #output {
+        margin-top: 20px;
+    }
+    .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 5px;
+        background-color: rgb(54, 245, 54);
+        color: #0c0c0c;
+        cursor: pointer;
+    }
+    .clear-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 5px;
+        background-color: rgb(243, 86, 75);
+        color: rgb(5, 5, 5);
+        cursor: pointer;
+    }
+    .button-container {
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>REGISTRATION FORM</h2> 
+    <form id="registrationForm">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name">
+        <label for="email">E-mail:</label>
+        <input type="text" name="email" id="email">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" name="dob" id="dob">
+        <label for="mobileno">Mobile No:</label>
+        <div style="display: flex;">
+            <select name="countryCode" id="countryCode" style="width: 30%;height: 30px;">
+                <option value="+91">+91 (India)</option>
+                <option value="+1">+1 (USA)</option>
+            </select>
+            <input type="tel" name="mobileno" id="mobileno" style="width: 70%; height:30px">
+        </div>
+        <label for="address">Address:</label>
+        <textarea name="address" id="address" rows="5" cols="30"></textarea>
+        <label>Gender:</label>
+        <label class="radio-label"><input type="radio" name="gender" value="male" id="male"> Male</label>
+        <label class="radio-label"><input type="radio" name="gender" value="female" id="female"> Female</label>
+        <label class="radio-label"><input type="radio" name="gender" value="other" id="other"> Other</label><br><br>
+        <label for="agree">Agree to Terms of Service:  <input type="checkbox" name="agree" id="agree"></label><br>
+        <div class="button-container">
+            <input type="submit" value="Submit" class="submit-btn"><br>
+            <input type="reset" value="Clear" class="clear-btn"><br>
+        </div>
+    </form>
+    <div id="output"></div>
+</div>
+
+<script>
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+    event.preventDefault(); 
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var mobileno = document.getElementById("mobileno").value;
+    var dob = document.getElementById("dob").value;
+    var address = document.getElementById("address").value;
+    var gender = document.querySelector('input[name="gender"]:checked');
+    var agree = document.getElementById("agree");
+
+    if (name === "") {
+        alert("Name is required");
+        return;
+    }
+    if (email === "") {
+        alert("Email is required");
+        return;
+    }
+    if (mobileno === "") {
+        alert("Mobile number is required");
+        return;
+    }
+    if (dob === "") {
+        alert("Date of birth is required");
+        return;
+    }
+    if (mobileno.length !== 10) {
+        alert("Mobile number must be 10 digits");
+        return;
+    }
+    if (address === "") {
+        alert("Address is required");
+        return;
+    }
+    if (!gender) {
+        alert("Gender is required");
+        return;
+    }
+    if (!agree.checked) {
+        alert("You must agree to the terms of service");
+        return;
+    }
+
+    document.getElementById("output").innerHTML = "<hr><hr><h3 style='color: #006600;'>You have successfully registered.</h3>" +
+        "<h2>Your OUTPUT:</h2>" +
+        "Name: " + name + "<br>" +
+        "Email: " + email + "<br>" +
+        "Mobile No: " + mobileno + "<br>" +
+        "Date of Birth: " + dob + "<br>" +
+        "Address: " + address + "<br>" +
+        "Gender: " + gender.value + "<br>";
+});
+
+document.querySelectorAll('input, textarea, select').forEach(function(input) {
+    input.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            var prevInput = input.previousElementSibling;
+            while (prevInput && (prevInput.tagName !== 'INPUT' && prevInput.tagName !== 'TEXTAREA' && prevInput.tagName !== 'SELECT')) {
+                prevInput = prevInput.previousElementSibling;
+            }
+            if (!prevInput || (prevInput.value === "" && prevInput.tagName !== 'SELECT')) {
+                alert("Please fill the previous field.");
+                event.preventDefault();
+            }
+        }
+    });
+});
+</script>
+
+</body>
+</html>
